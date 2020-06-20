@@ -42,11 +42,11 @@
                                 <form>
                                     <input type="text" name="search" class="form-control">
                                     <button type="submit" class="btn btn-info">Searching</button>
-                                    <a href="{{ route('categories.index') }}">Reset</a>
+                                    <a href="{{ route('admin.categories.index') }}">Reset</a>
                                 </form>
                             </div>
                             <div class="col text-right">
-                                <a href="{{ route('categories.create') }}" class="btn btn-success">Create</a>
+                                <a href="{{ route('admin.categories.create') }}" class="btn btn-success">Create</a>
                             </div>
                         </div>
 
@@ -68,13 +68,13 @@
                                     <td>{{ $category->name }}</td>
                                     <td>
                                         @if ($category->parent)
-                                            <a href="{{ route('categories.show', $category->parent) }}" class="link-item">{{ $category->parent->name }}</a>
+                                            <a href="{{ route('admin.categories.show', $category->parent) }}" class="link-item">{{ $category->parent->name }}</a>
                                         @endif
                                     </td>
                                     <td>
-                                        <a href="{{ route('categories.show', $category) }}" class="btn btn-info">Show</a>
-                                        <a href="{{ route('categories.edit', $category) }}" class="btn btn-primary">Edit</a>
-                                        <form action="{{ route('categories.destroy', $category) }}" method="post" class="d-inline-block">
+                                        <a href="{{ route('admin.categories.show', $category) }}" class="btn btn-info">Show</a>
+                                        <a href="{{ route('admin.categories.edit', $category) }}" class="btn btn-primary">Edit</a>
+                                        <form action="{{ route('admin.categories.destroy', $category) }}" method="post" class="d-inline-block">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger">Delete</button>

@@ -14,7 +14,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="/">admin</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('categories.index') }}">categories</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('admin.categories.index') }}">categories</a></li>
                             <li class="breadcrumb-item active">Create new category</li>
                         </ol>
                     </div><!-- /.col -->
@@ -28,7 +28,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="card card-body">
-                        <form action="{{ route('categories.store') }}" method="post">
+                        <form action="{{ route('admin.categories.store') }}" method="post">
                            @include('admin.category.form')
                         </form>
 

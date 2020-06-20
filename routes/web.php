@@ -13,6 +13,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'CategoryController@index');
 
-Route::resource('categories', 'CategoryController');
+Route::get('/', function (){
+    return 'INDEX';
+});
+
+Route::group([
+    'prefix' => '/admin',
+    'as' => 'admin.',
+    'middleware' => 'auth'
+], function () {
+
+    Route::get('/', 'DashboardController')->name('dashboard');
+    Route::resource('/categories', 'CategoryController');
+});
+
+Auth::routes();
