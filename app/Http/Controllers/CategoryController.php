@@ -26,7 +26,7 @@ class CategoryController extends Controller
         return view('admin.category.index' , [
             'categories' => Category::with(['parent'])
                 ->where('name' , 'LIKE' , "%{$q}%")
-                ->paginate($request->query('limit' , 5))
+                ->paginate($request->query('limit' , 10))
         ]);
     }
 
