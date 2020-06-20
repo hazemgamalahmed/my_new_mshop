@@ -14,7 +14,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="/">admin</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('categories.index') }}">categories</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('admin.categories.index') }}">categories</a></li>
                             <li class="breadcrumb-item active">Show Category: {{ $category->name }}</li>
                         </ol>
                     </div><!-- /.col -->
@@ -31,9 +31,9 @@
                         <h2>Title: <br> {{ $category->name }}</h2>
                         <p>Description: <br> {{ $category->description }}</p>
                         @if ($category->parent)
-                            Parent: <a href="{{ route('categories.show', $category->parent) }}">{{ $category->parent->name }}</a>
+                            Parent: <a href="{{ route('admin.categories.show', $category->parent) }}">{{ $category->parent->name }}</a>
                         @endif
-                        <a href="{{ route('categories.edit', $category) }}" class="btn btn-primary">Edit</a>
+                        <a href="{{ route('admin.categories.edit', $category) }}" class="btn btn-primary">Edit</a>
                     </div>
                 </div>
                 <!-- /.row -->

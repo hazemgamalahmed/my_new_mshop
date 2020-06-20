@@ -8,7 +8,10 @@
             <a href="index3.html" class="nav-link">Home</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="#" class="nav-link">Contact</a>
+            <form action="{{ route('logout') }}" method="post" class="d-inline-block">
+                @csrf
+                <button type="submit" class="btn btn-link nav-link">Logout</button>
+            </form>
         </li>
     </ul>
 
