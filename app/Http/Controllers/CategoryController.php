@@ -4,7 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\Http\Requests\CategoryRequest;
+use Exception;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
+use Illuminate\View\View;
 
 class CategoryController extends Controller
 {
@@ -12,7 +17,7 @@ class CategoryController extends Controller
      * Display a listing of the resource.
      *
      * @param Request $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Factory|View
      */
     public function index(Request $request)
     {
@@ -28,7 +33,7 @@ class CategoryController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Factory|View
      */
     public function create()
     {
@@ -41,7 +46,7 @@ class CategoryController extends Controller
      * Store a newly created resource in storage.
      *
      * @param CategoryRequest $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return RedirectResponse|Redirector
      */
     public function store(CategoryRequest $request)
     {
@@ -54,8 +59,8 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Category $category
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @param Category $category
+     * @return Factory|View
      */
     public function show(Category $category)
     {
@@ -67,8 +72,8 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Category $category
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @param Category $category
+     * @return Factory|View
      */
     public function edit(Category $category)
     {
@@ -82,8 +87,8 @@ class CategoryController extends Controller
      * Update the specified resource in storage.
      *
      * @param CategoryRequest $request
-     * @param \App\Category $category
-     * @return void
+     * @param Category $category
+     * @return RedirectResponse|Redirector
      */
     public function update(CategoryRequest $request , Category $category)
     {
@@ -95,9 +100,9 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Category $category
-     * @return \Illuminate\Http\Response
-     * @throws \Exception
+     * @param Category $category
+     * @return RedirectResponse|Redirector
+     * @throws Exception
      */
     public function destroy(Category $category)
     {
@@ -105,6 +110,10 @@ class CategoryController extends Controller
         return redirect(route('categories.index'));
     }
 
+    /**
+     * @param $request
+     * @return mixed
+     */
     private function levelHandle($request)
     {
 
