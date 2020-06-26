@@ -31,5 +31,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 <!-- REQUIRED SCRIPTS -->
 @include('layouts.parts.js')
+@yield('js')
 </body>
 </html>

@@ -26,6 +26,9 @@ Route::group([
 
     Route::get('/', 'DashboardController')->name('dashboard');
     Route::resource('/categories', 'CategoryController');
+    Route::resource('/products', 'ProductController');
+    Route::resource('/orders', 'OrderController');
+    Route::resource('/clients', 'ClientController');
 });
 
 Auth::routes();
