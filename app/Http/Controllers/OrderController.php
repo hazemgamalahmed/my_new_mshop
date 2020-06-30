@@ -50,10 +50,31 @@ class OrderController extends Controller
         $request->merge([
             'user_id' => $request->user()->id // auth()->user()->id, Auth::user()->id
         ]);
+        $products = [];
+        $total_amount = 0;
+        foreach($request->get('products') as $product){
+        	
+        	$productFromDb = Product::find($product['product_id']);
+        	$newProduct = [];
 
+        	$newProduct['product_id'] = $productFromDb->id;
+
+        	$newProduct['price'] = $productFromDb->price;
+        	$newProduct['quantity'] = $product['quantity'];
+        	$newProduct['total'] = $newProduct['price'] * $newProduct['quantity'];
+
+        	$products[] = $newProduct;
+        	$total_amount += $newProduct['total'];
+
+        	
+        }
+        
+        $request->merge([
+        	'total_amount' => $total_amount
+        ]);
         $order = Order::create($request->all());
         // @TODO validation on calculation
-        $order->products()->attach($request->get('products'));
+        $order->products()->attach($products);
         $order->save();
 
         return redirect(route('admin.orders.show', $order));
@@ -67,7 +88,11 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        dd($order->products[0]->pivot->price);
+        // dd($order->products[0]->pivot->price);
+        return view('admin.order.show', [
+            'order' => $order
+            // 'orders' => Order::all()
+        ]);
     }
 
     /**
@@ -78,7 +103,11 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
-        //
+        return view('admin.order.edit', [
+            'orders' => $order,
+            'products' => Product::all(),
+            'clients' => Client::all()
+        ]);
     }
 
     /**
@@ -88,9 +117,19 @@ class OrderController extends Controller
      * @param  \App\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Order $order)
+    public function update(OrderRequet $request, Order $order)
     {
-        //
+        $request->merge([
+            'user_id' => $request->user()->id // auth()->user()->id, Auth::user()->id
+        ]);
+        
+        $order->update($request->all());
+       
+        // // @TODO validation on calculation
+        $order->products()->sync($request->get('products'));
+        // $order->save();
+
+        return redirect(route('admin.orders.show', $order));
     }
 
     /**
@@ -101,6 +140,7 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        //
+        $order->delete();
+        return 'one row deleted';
     }
 }

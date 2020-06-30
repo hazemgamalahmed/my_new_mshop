@@ -1,32 +1,4 @@
-@extends('layouts.app')
-
-@section('title', 'All Categories')
-
-@section('content')
-    <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <div class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 class="m-0 text-dark">Categories</h1>
-                    </div><!-- /.col -->
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="/">admin</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('admin.categories.index') }}">categories</a></li>
-                            <li class="breadcrumb-item active">Show Category:</li>
-                        </ol>
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
-            </div><!-- /.container-fluid -->
-        </div>
-        <!-- /.content-header -->
-        <div class="content">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="card card-body">
-                        <form method="POST" action="{{route('admin.orders.update', $orders)}}">
+<form method="POST" action="{{route('admin.orders.update', $order)}}">
                             @method('PUT')
                             @csrf
 <div class="row">
@@ -35,9 +7,9 @@
             <label for="client_id">Client Name</label>
             <select name="client_id" id="client_id" class="form-control">
                
-                    <option value="  {{ $orders->client->id }} "
-                        {{ old('client_id') == $orders->client->id ? 'selected' : '' }}>
-                        {{$orders->client->name }}
+                    <option value="  {{ $order->client->id }} "
+                        {{ old('client_id') == $order->client->id ? 'selected' : '' }}>
+                        {{$order->client->name }}
                     </option>
                 
             </select>
@@ -158,36 +130,28 @@
                 </tr>
             @endforeach
         @else
-        @foreach($orders->products as $order)
             <tr id="product-1">
                 <td>
-                    
+                    @foreach($order->products as $product)
                     <select name="products[1][product_id]"
                             class="form-control input-product-product_id"
                             row-id="product-1">
-                        @foreach($products as $product)
-                        @if(isset($orders) && $product->id == $order->id)
-                        <option value="{{ $product->id }}" data-price="{{ $product->price }}" selected="">
+                        
+                            <option value="{{ $product->id }}" data-price="{{ $product->price }}">
                                 {{ $product->name }} | {{ $product->price }}
                             </option>
-
-                        @endif
-                            <option value="{{ $product->id }}"
-                             data-price="{{ $product->price }}">
-                                {{ $product->name }} | {{ $product->price }}
-                            </option> 
-                        @endforeach
+                        
                     </select>
-                  
+                    @endforeach
                 </td>
                 <td>
-                    
+                    @foreach($order->products as $product)
                     <input type="number"
                            name="products[1][quantity]"
-                           value="{{$order->pivot->quantity}}"
+                           value="{{$product->pivot->quantity}}"
                            row-id="product-1"
                            class="form-control input-product-quantity">
-                       
+                        @endforeach
                 </td>
                 <td>
                     <input type="number"
@@ -195,33 +159,29 @@
                            readonly
                            class="form-control input-product-price"
                            row-id="product-1"
-                           value="{{ $order->pivot->price  }}">
+                           value="{{ $order->products[0]->pivot->price }}">
                 </td>
                 <td>
                     <input type="number"
                            name="products[1][total]"
-                           
+                           readonly
                            class="form-control input-product-total"
                            row-id="product-1"
-                           value="{{ $order->pivot->total }}">
+                           value="{{ $order->products[0]->pivot->price }}">
                 </td>
                 <td>
                     <button type="button" class="btn btn-danger row-delete" row-id="product-1">-</button>
                 </td>
             </tr>
-            @endforeach
         @endif
 
         </tbody>
 
     </table>
-
 </div>
 <div class="text-center">
-    <button type="submit" class="btn btn-success">Edit</button>
-
+    <button type="submit" class="btn btn-success">Save</button>
 </div>
-</form>
 @section('js')
     <script>
 
@@ -231,28 +191,22 @@
         $(document).on('click', '#btn-add-new-product', function () {
             const rowId = Date.now();
             const productRow = `
-             @foreach($orders->products as $order)
             <tr id="product-${rowId}">
                 <td>
                     <select name="products[${rowId}][product_id]"
                     row-id="product-${rowId}"
                     class="form-control  input-product-product_id">
-                       @foreach($products as $product)
-                       @if(isset($orders) && $product->id == $order->id)
+                        @foreach($order->products as $product)
                             <option value="{{ $product->id }}" data-price="{{ $product->price }}">
                                 {{ $product->name }} | {{ $product->price }}
                             </option>
-                            @endif
-                            <option value="{{ $product->id }}" data-price="{{ $product->price }}">
-                                {{ $product->name }} | {{ $product->price }}
-                            </option>
-                       @endforeach
+                        @endforeach
                     </select>
                 </td>
                 <td>
                     <input type="number"
                     name="products[${rowId}][quantity]"
-                    value="{{$order->pivot->quantity}}"
+                    value="1"
                     row-id="product-${rowId}"
                     class="form-control input-product-quantity">
                 </td>
@@ -260,7 +214,7 @@
                     <input type="number"
                     name="products[${rowId}][price]"
                     row-id="product-${rowId}"
-                    value="{{ $order->pivot->price }}"
+                    value="{{ $order->products[0]->pivot->price }}"
                     readonly
                     class="form-control input-product-price">
                 </td>
@@ -268,15 +222,14 @@
                     <input type="number"
                     name="products[${rowId}][total]"
                     row-id="product-${rowId}"
-                    
-                    value="{{ $order->pivot->price }}"
+                    readonly
+                    value="{{ $order->products[0]->pivot->price }}"
                     class="form-control input-product-total">
                 </td>
                 <td>
                     <button type="button" class="btn btn-danger row-delete" row-id="product-${rowId}">-</button>
                 </td>
             </tr>
-             @endforeach
             `;
             $('#products-list').append(productRow);
         });
@@ -318,12 +271,3 @@
 @endsection
 
                         </form>
-
-                   </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-        @endsection

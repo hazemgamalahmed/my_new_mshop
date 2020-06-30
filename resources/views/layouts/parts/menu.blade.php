@@ -13,7 +13,7 @@
        class="nav-link  {{ Route::currentRouteName() == 'admin.categories.index'? 'active' : '' }}">
         <i class="nav-icon fas fa-th"></i>
         <p>
-            Categories
+            Categorie
         </p>
     </a>
 </li>
@@ -38,7 +38,7 @@
 <li class="nav-item">
     <a href="{{ route('admin.clients.index') }}"
        class="nav-link  {{ Route::currentRouteName() == 'admin.clients.index'? 'active' : '' }}">
-        <i class="nav-icon fas fa-th"></i>
+        <i class="nav-icon fas fa-user"></i>
         <p>
             clients
         </p>
